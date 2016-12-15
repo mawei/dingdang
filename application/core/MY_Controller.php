@@ -193,8 +193,12 @@ class Member_Controller extends Front_Controller{
 
 		$this->current_role_priv_arr = $this->group_id==SUPERADMIN_GROUP_ID?$this->cache_module_menu_arr:(isset($_cache_member_role_priv_arr[$this->group_id])?$_cache_member_role_priv_arr[$this->group_id]:NULL);
 
-		$this->check_member();
-		$this->check_priv();
+		if(!($this->page_data['folder_name']=='adminpanel'&&$this->page_data['controller_name']=='manage'&&$this->page_data['method_name']=='register'))
+		{
+			$this->check_member();
+			$this->check_priv();
+		}
+
 
 
 	}

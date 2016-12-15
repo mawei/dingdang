@@ -4,7 +4,9 @@ class Manage extends Admin_Controller {
 	function __construct()
 	{
 		parent::__construct();
+
 		$this->load->model(array('Times_model'));
+
 	}
 
 	function cache(){
@@ -46,6 +48,48 @@ class Manage extends Admin_Controller {
 	{
 		$this->session->sess_destroy();
 		redirect(base_url('adminpanel'));
+	}
+
+	function register()
+	{
+		if(isset($_POST['username'])) {
+			$username = isset($_POST['username']) ? trim($_POST['username']) : exit(json_encode(array('status'=>false,'tips'=>' 用户名不能为空')));
+			$password = isset($_POST["password"])?trim(safe_replace($_POST["password"])):exit(json_encode(array('status'=>false,'tips'=>'密码不能为空')));
+			if($password=='')exit(json_encode(array('status'=>false,'tips'=>'密码不能为空')));
+			
+			$repassword = isset($_POST["repassword"])?trim(safe_replace($_POST["repassword"])):exit(json_encode(array('status'=>false,'tips'=>'密码不能为空')));
+			if($repassword=='')exit(json_encode(array('status'=>false,'tips'=>'重复密码不能为空')));
+			if($repassword!=$password)exit(json_encode(array('status'=>false,'tips'=>'密码输入不一样')));
+			$encrypt = random_string('alnum',5);
+			$password = md5(md5($password.$encrypt));
+			$group_id = 2;
+			$mobile= isset($_POST["mobile"])?trim(safe_replace($_POST["mobile"])):exit(json_encode(array('status'=>false,'tips'=>'手机号不能为空')));
+			if(!is_mobile($mobile)){
+				exit(json_encode(array('status'=>false,'tips'=>'手机号格式不正确')));
+			}
+			if($this->check_username($username))exit(json_encode(array('status'=>false,'tips'=>'用户名已经存在')));
+            $new_id = $this->Member_model->insert(
+												array(
+													'username'=>$username,
+													'password'=>$password,
+													'group_id'=>$group_id,
+													'mobile'=>$mobile,
+													'is_lock'=>0,
+													'reg_time'=>date('Y-m-d H:i:s'),
+													'encrypt'=>$encrypt,
+													'reg_ip'=>$this->input->ip_address(),
+											));
+            if($new_id)
+            {
+				exit(json_encode(array('status'=>true,'tips'=>'注册成功','new_id'=>$new_id)));
+            }else
+            {
+            	exit(json_encode(array('status'=>false,'tips'=>'注册失败','new_id'=>0)));
+	        }
+
+		}else{
+			$this->admin_tpl('register',array('require_js'=>true));
+		}
 	}
 	
 	function login()
@@ -100,5 +144,17 @@ class Manage extends Admin_Controller {
 		}
 	}
 
-	
+	function check_username($username='')
+	{
+		if(isset($_POST['username'])&&$username==''){
+			$username = trim(safe_replace($_POST['username']));
+			$c = $this->Member_model->count(array('username'=>$username));
+			echo  $c>0?'{"valid":false}':'{"valid":true}';
+		}else{
+			$username = trim(safe_replace($username));
+			$c = $this->Member_model->count(array('username'=>$username));
+			return $c>0?true:false;
+		}
+		
+	}
 }

@@ -38,7 +38,10 @@ class Docdata extends Admin_Controller {
      */
     function index($page_no=0,$sort_id=0)
     {
+
         $page_no = max(intval($page_no),1);
+        $user_id = $this->session->userdata('user_id');
+
         
         $orderby = "docdata_id desc";
         $dir = $order=  NULL;
@@ -58,17 +61,26 @@ class Docdata extends Admin_Controller {
         }
                 
         $where ="";
+
+
         $_arr = NULL;//从URL GET
+        $where_arr = NULL;
         if (isset($_GET['dosubmit'])) {
-            $where_arr = NULL;
             $_arr['keyword'] =isset($_GET['keyword'])?safe_replace(trim($_GET['keyword'])):'';
             if($_arr['keyword']!="") $where_arr[] = "concat(keyword) like '%{$_arr['keyword']}%'";
-                
-                
-        
-                
+            
             if($where_arr)$where = implode(" and ",$where_arr);
+            if($user_id != 1)
+            {
+                 $where .= "and user_id = '{$user_id}'";  
+            }
         }
+
+        if($user_id != 1)
+        {
+            $where .= "user_id = '{$user_id}'";
+        }
+
 
             $data_list = $this->docdata_model->listinfo($where,'*',$orderby , $page_no, $this->docdata_model->page_size,'',$this->docdata_model->page_size,page_list_url('adminpanel/docdata/index',true));
         if($data_list)
@@ -178,6 +190,7 @@ class Docdata extends Admin_Controller {
             $this->view('edit',array('require_js'=>true,'is_edit'=>false,'id'=>$id,'data_info'=>$data_info));
         }
     }
+    
      /**
      * 删除单个数据
      * @param int id 

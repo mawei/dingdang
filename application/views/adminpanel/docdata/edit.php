@@ -29,7 +29,14 @@
 				<label for="keyword" class="col-sm-4 control-label form-control-static"><?php echo isset($value['field_alias'])?$value['field_alias']:'' ?></label>
 				<div class="col-sm-8 ">
 					<?if($value['type'] == 'text'){?>
-					<textarea name="<?php echo isset($value['field_name'])?$value['field_name']:'' ?>"  id="<?php echo isset($value['field_name'])?$value['field_name']:'' ?>"><?php echo isset($value['value'])?$value['value']:'' ?></textarea>
+					<textarea class="form-control" rows="5" name="<?php echo isset($value['field_name'])?$value['field_name']:'' ?>"  id="<?php echo isset($value['field_name'])?$value['field_name']:'' ?>"><?php echo isset($value['value'])?$value['value']:'' ?></textarea>
+					<?}else if ($value['type'] == 'select'){?>
+						<?$vals = explode('|',$value['field_values']);?>
+						<select class="form-control" name="<?php echo isset($value['field_name'])?$value['field_name']:'' ?>"  id="<?php echo isset($value['field_name'])?$value['field_name']:'' ?>">
+							<?foreach ($vals as $v) {?>
+								<option value="<?echo $v;?>"><?echo $v;?></option>
+							<?}?>
+						</select>
 					<?}else{?>
 					<input type="text" name="<?php echo isset($value['field_name'])?$value['field_name']:'' ?>"  id="<?php echo isset($value['field_name'])?$value['field_name']:'' ?>" value="<?php echo isset($value['value'])?$value['value']:'' ?>"  
 					class="form-control validate[required]" >

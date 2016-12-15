@@ -96,6 +96,13 @@ $config['aci_module'] = array (
         'method' => 'cache',
         'caption' => '管理中心-全局缓存',
       ),
+      7 => 
+      array (
+        'folder' => 'adminpanel',
+        'controller' => 'manage',
+        'method' => 'register',
+        'caption' => '管理中心-注册',
+      ),
     ),
   ),
   'user' => 
