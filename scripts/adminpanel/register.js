@@ -62,7 +62,7 @@ define(function (require) {
 				if(dataObj.status)
 				{
 					$.scojs_message('注册成功', $.scojs_message.TYPE_OK);
-					aci.GoUrl(SITE_URL + '/adminpanel/manage/login',1);
+					aci.GoUrl(SITE_URL + 'adminpanel/manage/login',1);
 				}else
 				{
 					$.scojs_message(dataObj.tips, $.scojs_message.TYPE_ERROR);
