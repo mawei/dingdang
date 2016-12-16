@@ -20,9 +20,25 @@
 	require('jquery-ui');
 	require('jquery-ui-dialog-extend');
 	require('datetimepicker');
-
+	var i = 1;
 		$(function () {
+		$("#add_row").click(function(){
+			$("#delete_row").show();
+			i++;
+			$(this).prev().clone(true).insertBefore($(this));
 
+			$(this).prev().find("input").each(function(){
+					$(this).attr("name",$(this).attr("name").replace(i-1,'') + i);
+			})	
+
+		});
+		$("#delete_row").click(function(){
+			if(i > 1){
+				$(this).prev().prev().remove();
+				i--;
+			}
+
+		});
 
 $("#business_id_text").click(function(){
 chooseWindowBusiness_id('business_id',800,550,1,2)

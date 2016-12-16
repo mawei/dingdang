@@ -12,9 +12,14 @@
 		<div class='panel-body '>
 			<?php unset($data_info["fields"]["docs"]); ?>
 			<?php foreach($data_info["fields"] as $key =>$values) {?>
-								<fieldset>
+			<?if($key=='增行'){?>
 
-						<legend><?echo $key;?></legend>
+				<input type="button" class="btn btn-success btn-xs" value="增行" id="add_row"></input>
+				<input type="button" class="btn btn-danger btn-xs" value="删除行" hidden id="delete_row"></input>
+			<?}else{?>
+					    <fieldset>
+
+						<legend><?echo preg_replace('|[0-9a-zA-Z/]+|', '', $key);?></legend>
 <!-- 			<div class="form-group">
 				<label for="keyword" class="col-sm-4 control-label form-control-static">选择需要生成的文档</label>
 				<div class="col-sm-5 ">
@@ -46,6 +51,7 @@
 
 						<?php }?>
 																	</fieldset>
+												<?php }?>
 
 												<?php }?>
 

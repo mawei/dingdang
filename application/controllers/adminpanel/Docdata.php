@@ -244,13 +244,40 @@ class Docdata extends Admin_Controller {
         $business_id = $data['business_id'];
         $business = $this->db->query("select * from t_aci_business where business_id={$business_id}")->result_array(); 
         $data_info['fields'] = array();
-        $fields = $this->db->query("select field_name,field_alias,category,type from t_aci_fields where business_id={$business_id}")->result_array();
+        $fields = $this->db->query("select field_name,field_alias,category,type,field_values from t_aci_fields where business_id={$business_id}")->result_array();
 
         $data_info['fields'] = $fields;
-
+        $j = count($data_info['fields']);
+        // foreach ($data_info['fields'] as $key => $value) {
+        //     //$data_info['fields'][$key]["value"] = isset($values[$value["field_name"]])? $values[$value["field_name"]]:'';
+        //     $i = 2;
+        //     while (isset( $values[$value["field_name"].$i])) {
+        //         $data_info['fields'][$j]["value"] = $values[$value["field_name"].$i];
+        //         $i++;
+        //         $j++;
+        //     }
+        //     $data_info['fields'][$key]["value"] = $values[$value["field_name"]];
+        // }
         foreach ($data_info['fields'] as $key => $value) {
-            $data_info['fields'][$key]["value"] = isset($values[$value["field_name"]])? $values[$value["field_name"]]:'';
+            $data_i['fields'][$value['field_name']] = $value;
+
+
         }
+        unset($values[0]);
+        foreach ($values as $key => $value) {
+            $data_i['fields'][$key]['value'] = $value;
+
+            $i = 2;
+            while (isset( $values[$key.$i])) {
+                $data_i['fields'][$key.$i] = $data_i['fields'][$key];
+                $data_i['fields'][$key.$i]['value'] = $value;
+                $data_i['fields'][$key.$i]['category'] = $data_i['fields'][$key.$i]['category'].$i;
+                $i++;
+            }
+        }
+
+        $data_info['fields'] = $data_i['fields'];
+
 
         $categorys = $this->db->query("select categorys from t_aci_business where business_id={$business_id}")->result_array()[0]['categorys'];
         $categorys = explode("|", $categorys);
@@ -258,10 +285,26 @@ class Docdata extends Admin_Controller {
         foreach ($categorys as $key => $value) {
             $new_fields[$value] = array();
         }
+        //print_r($data_info);die();
         foreach($data_info['fields'] as $f)
         {
-            if(in_array($f['category'], $categorys)) array_push($new_fields[$f['category']],$f);
+
+            if(!in_array($f['category'], array_keys($new_fields)) && in_array(preg_replace('|[0-9a-zA-Z/]+|', '', $f['category']),$categorys))
+            {
+
+                $offset = array_search(preg_replace('|[0-9a-zA-Z/]+|', '', $f['category']), array_keys($new_fields)) + 
+                $this->countArray(array_keys($new_fields),preg_replace('|[0-9a-zA-Z/]+|', '', $f['category'])) ;
+                $new_fields = array_merge(array_slice($new_fields, 0, $offset), array($f['category']=>array()), array_slice($new_fields, $offset));
+                $i++;
+            }
+
+            if(in_array($f['category'], array_keys($new_fields)) )
+            {
+                array_push($new_fields[$f['category']],$f);
+            }
         }
+        //print_r($new_fields);die();
+
         $data_info['fields'] = $new_fields;
         $id = $data['docdata_id'];
         $data_info["fields"]["docs"] = $data['docs'];
@@ -313,6 +356,19 @@ class Docdata extends Admin_Controller {
             $data_info = $this->_process_datacorce_value($data_info,true);
             $this->view('edit',array('require_js'=>true,'data_info'=>$data_info,'is_edit'=>true,'id'=>$id));
         }
+    }
+
+    private function countArray($array,$key)
+    {
+        $count = 0;
+        $a = array_count_values($array);
+        foreach ($a as $k => $value) {
+            if(preg_replace('|[0-9a-zA-Z/]+|', '', $k) == $key)
+            {
+                $count += $value;
+            }
+        }
+        return $count;
     }
  
   
