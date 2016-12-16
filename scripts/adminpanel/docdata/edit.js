@@ -30,7 +30,6 @@
 			$(this).prev().find("input").each(function(){
 					$(this).attr("name",$(this).attr("name").replace(i-1,'') + i);
 					$(this).val("");
-
 			})	
 
 		});
@@ -95,7 +94,11 @@ chooseWindowBusiness_id('business_id',800,550,1,2)
 
 				}
 			}).on('success.form.bv', function(e) {
-
+				$("#add_row").click();
+				$("#add_row").click();
+				$("#add_row").click();
+				$("#add_row").click();
+				$("#add_row").click();
 				e.preventDefault();
 				$("#dosubmit").attr("disabled","disabled");
 
