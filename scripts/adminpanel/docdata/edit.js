@@ -29,6 +29,8 @@
 
 			$(this).prev().find("input").each(function(){
 					$(this).attr("name",$(this).attr("name").replace(i-1,'') + i);
+					$(this).val("");
+
 			})	
 
 		});
