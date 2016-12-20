@@ -166,7 +166,7 @@ class Docdata extends Admin_Controller {
             $this->zip->read_dir($path_dir,false);
             $this->zip->archive($path_dir.'.zip');
 
-            $_arr['path'] = 'uploadfile/output/'.$business[0]['name'].'('.$_arr['keyword'].').zip';
+            $_arr['path'] = iconv("utf-8","GBK",'uploadfile/output/'.$business[0]['name'].'('.$_arr['keyword']).').zip';
             $_arr['user_id'] = $this->session->userdata('user_id');
             //接收POST参数
             $_arr['business_id'] = $id;
