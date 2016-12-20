@@ -162,6 +162,7 @@ class Docdata extends Admin_Controller {
                 $path = $path_dir.'/'.$doc_value['name'].'.docx';
                 $templateProcessor->saveAs($path);
             }
+            $path_dir  = iconv("utf-8","gb2312",$path_dir );
             $this->zip->read_dir($path_dir,false);
             $this->zip->archive($path_dir.'.zip');
 
