@@ -24,11 +24,9 @@
 		$(function () {
 		$("#add_row").click(function(){
 			$("#delete_row").show();
-			i++;
 			$(this).prev().clone(true).insertBefore($(this));
 
 			$(this).prev().find("input").each(function(){
-					$(this).attr("name",$(this).attr("name").replace(i-1,'') + i);
 					if($(this).attr("extra-type") != "default")
 					{
 						$(this).val("");
