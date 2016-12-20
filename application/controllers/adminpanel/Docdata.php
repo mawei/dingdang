@@ -157,12 +157,12 @@ class Docdata extends Admin_Controller {
 
                     $i++;
                 } 
-                $path_dir = 'uploadfile/output/'.$business[0]['name'].'('.$_arr['keyword'].')';
+                $path_dir = iconv("utf-8","gb2312",'uploadfile/output/'.$business[0]['name'].'('.$_arr['keyword'].')');
                 if(!is_dir($path_dir)) mkdir($path_dir,0777);
-                $path = $path_dir.'/'.$doc_value['name'].'.docx';
+                $path = $path_dir.'/'.iconv("utf-8","gb2312",$doc_value['name']).'.docx';
                 $templateProcessor->saveAs($path);
             }
-            $path_dir  = iconv("utf-8","gb2312//IGNORE",$path_dir );
+            //$path_dir  = iconv("utf-8","gb2312//IGNORE",$path_dir );
             $this->zip->read_dir($path_dir,false);
             $this->zip->archive($path_dir.'.zip');
 
