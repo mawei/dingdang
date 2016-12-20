@@ -157,7 +157,7 @@ class Docdata extends Admin_Controller {
 
                     $i++;
                 } 
-                $path_dir = iconv("utf-8","GBK",'uploadfile/output/'.$business[0]['name'].'('.$_arr['keyword'].')');
+                $path_dir = 'uploadfile/output/'.$business[0]['name'].'('.$_arr['keyword'].')';
                 if(!is_dir($path_dir)) mkdir($path_dir,0777);
                 $path = $path_dir.'/'.iconv("utf-8","GBK",$doc_value['name']).'.docx';
                 $templateProcessor->saveAs($path);
@@ -166,7 +166,7 @@ class Docdata extends Admin_Controller {
             $this->zip->read_dir($path_dir,false);
             $this->zip->archive($path_dir.'.zip');
 
-            $_arr['path'] = iconv("utf-8","GBK//IGNORE",'uploadfile/output/'.$business[0]['name'].'('.$_arr['keyword']).').zip';
+            $_arr['path'] = 'uploadfile/output/'.$business[0]['name'].'('.$_arr['keyword'].').zip';
             $_arr['user_id'] = $this->session->userdata('user_id');
             //接收POST参数
             $_arr['business_id'] = $id;
