@@ -29,7 +29,11 @@
 
 			$(this).prev().find("input").each(function(){
 					$(this).attr("name",$(this).attr("name").replace(i-1,'') + i);
-					$(this).val("");
+					if($(this).attr("extra-type") != "default")
+					{
+						$(this).val("");
+					}
+					
 			})	
 
 		});
@@ -41,9 +45,9 @@
 
 		});
 
-$("#business_id_text").click(function(){
-chooseWindowBusiness_id('business_id',800,550,1,2)
-})
+		$("#business_id_text").click(function(){
+		chooseWindowBusiness_id('business_id',800,550,1,2)
+		})
             $('#validateform').bootstrapValidator({
 				message: '输入框不能为空',
 				feedbackIcons: {
@@ -94,13 +98,17 @@ chooseWindowBusiness_id('business_id',800,550,1,2)
 
 				}
 			}).on('success.form.bv', function(e) {
-				$("#add_row").click();
-				$("#add_row").click();
-				$("#add_row").click();
-				$("#add_row").click();
-				$("#add_row").click();
 				e.preventDefault();
 				$("#dosubmit").attr("disabled","disabled");
+
+				$('#validateform').find("input").each(function(){
+
+					if($(this).attr("extra-type") == "append")
+					{
+						$(this).val($(this).val() + $(this).attr("append-value"));
+					}
+				});
+
 
 				$.scojs_message("正在保存，请稍等...", $.scojs_message.TYPE_ERROR);
 				$.ajax({

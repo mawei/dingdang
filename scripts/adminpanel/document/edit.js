@@ -23,6 +23,8 @@
 		$("#dialog" ).dialog();$("#dialog" ).dialog("close");
 	}
 
+
+
 	define(function (require) {
 	var $ = require('jquery');
 	var aci = require('aci');
