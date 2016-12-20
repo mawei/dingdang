@@ -145,7 +145,16 @@ class Docdata extends Admin_Controller {
                     {
                         $_arr['keyword'] = $post_value;
                     }
-                    $templateProcessor->setValue($post_key, $post_value);  
+                    if(is_array($post_value))
+                    {
+                        for ($x=1;$x<20;$x++)
+                        {
+                            $templateProcessor->setValue($post_key.$x, isset($post_value[$x-1])?$post_value[$x-1]:"");   
+                        }
+                    }else{
+                        $templateProcessor->setValue($post_key, $post_value);  
+                    }
+
                     $i++;
                 } 
                 $path_dir = 'uploadfile/output/'.$business[0]['name'].'('.$_arr['keyword'].')';
@@ -325,7 +334,15 @@ class Docdata extends Admin_Controller {
                     {
                         $_arr['keyword'] = $post_value;
                     }
-                    $templateProcessor->setValue($post_key, $post_value);  
+                    if(is_array($post_value))
+                    {
+                        for ($x=1;$x<20;$x++)
+                        {
+                            $templateProcessor->setValue($post_key.$x, isset($post_value[$x-1])?$post_value[$x-1]:"");   
+                        }
+                    }else{
+                        $templateProcessor->setValue($post_key, $post_value);  
+                    }                    
                     $i++;
                 } 
                 $path_dir = 'uploadfile/output/'.$business[0]['name'].'('.$_arr['keyword'].')';
