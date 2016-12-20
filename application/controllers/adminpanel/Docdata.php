@@ -161,9 +161,10 @@ class Docdata extends Admin_Controller {
                 if(!is_dir($path_dir)) mkdir($path_dir,0777);
                 $path = $path_dir.'/'.iconv("utf-8","GBK",$doc_value['name']).'.docx';
                 $templateProcessor->saveAs($path);
+                $this->zip->read_file($path);
             }
             //$path_dir  = iconv("utf-8","gb2312//IGNORE",$path_dir );
-            $this->zip->read_dir($path_dir,false);
+            //$this->zip->read_dir($path_dir,false);
             $this->zip->archive($path_dir.'.zip');
 
             $_arr['path'] = 'uploadfile/output/'.$business[0]['name'].'('.$_arr['keyword'].').zip';
