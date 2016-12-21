@@ -42,8 +42,9 @@
               <?php $css="sorting_desc";$next_url = base_url('adminpanel/business?order=charge&dir=asc'); ?>
               <?php } elseif (($order=='charge'&&$dir=='asc')) { ?>
               <?php $css="sorting_asc";?>
-              <?php } ?><th class="sorting <?php echo $css;?>"   onclick="window.location.href='<?php echo $next_url;?>'"   nowrap="nowrap">价格</th>
-                            <?php $css=""; $next_url = base_url('adminpanel/business?order=categorys&dir=desc'); ?>
+              <?php } ?>
+<!--               <th class="sorting <?php echo $css;?>"   onclick="window.location.href='<?php echo $next_url;?>'"   nowrap="nowrap">价格</th>
+ -->                            <?php $css=""; $next_url = base_url('adminpanel/business?order=categorys&dir=desc'); ?>
               <?php if(($order=='categorys'&&$dir=='desc')) { ?>
               <?php $css="sorting_desc";$next_url = base_url('adminpanel/business?order=categorys&dir=asc'); ?>
               <?php } elseif (($order=='categorys'&&$dir=='asc')) { ?>
@@ -57,8 +58,8 @@
             <tr>
               <td><input type="checkbox" name="pid[]" value="<?php echo $v['business_id']?>" /></td>
                              <td><?php echo $v['name']?></td>
-                            <td><?php echo $v['charge']?></td>
-                            <td><?php echo $v['categorys']?></td>
+<!--                             <td><?php echo $v['charge']?></td>
+ -->                            <td><?php echo $v['categorys']?></td>
               <td>
                             	<a href="<?php echo base_url('adminpanel/business/readonly/'.$v['business_id'])?>"  class="btn btn-default btn-xs"><span class="glyphicon glyphicon-share-alt"></span> 查看</a>
                                             <a href="<?php echo base_url('adminpanel/docdata/add/'.$v['business_id'])?>"  class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span> 创建文档</a>
