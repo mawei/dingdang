@@ -8,18 +8,17 @@
 
           <div class="masthead clearfix">
             <div class="inner">
-              <h3 class="masthead-brand">ACI(AutoCodeigniter.com)</h3>
               <nav>
-                <ul class="nav masthead-nav">
+            <!--     <ul class="nav masthead-nav">
                   <li class="active"><a href="<?php echo site_url()?>">首页</a></li>
                   <li><a href="http://www.autoCodeigniter.com">联系</a></li>
                 </ul>
-              </nav>
+ -->              </nav>
             </div>
           </div>
 
           <div class="inner cover">
-            <h1 class="cover-heading">欢迎使用ACI. <a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=bad0214202bb89e4118c272a39b4cc81abf6bbae0ec7f46d68e5d4f06448cbda"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="ACI" title="ACI"></a></h1>
+            <!-- <h1 class="cover-heading">欢迎使用ACI. <a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=bad0214202bb89e4118c272a39b4cc81abf6bbae0ec7f46d68e5d4f06448cbda"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="ACI" title="ACI"></a></h1>
             <?php  if (version_compare(PHP_VERSION, '5.3.0') <= 0) :?>
             <p class="lead">很抱歉 ACI 要求最低PHP版本不能小于PHP 5.3</p>
             <?php else:?>
@@ -39,6 +38,7 @@
                 </p>
               <?php endif;?>
             <?php endif;?>
+ -->                  <a href="<?php echo site_url('adminpanel')?>" class="btn btn-lg btn-default">进入后台管理</a>
 
           </div>
 
