@@ -16,6 +16,7 @@
 					alert("请先勾选明细");
 					return false;
 				}
+				
 				if(confirm('确定要删除吗?'))
 				{
 					$("#form_list").submit();

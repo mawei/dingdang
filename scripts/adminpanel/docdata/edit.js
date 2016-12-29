@@ -100,7 +100,6 @@
 				$("#dosubmit").attr("disabled","disabled");
 
 				$('#validateform').find("input").each(function(){
-
 					if($(this).attr("extra-type") == "append")
 					{
 						$(this).val($(this).val() + $(this).attr("append-value"));
