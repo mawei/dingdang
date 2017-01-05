@@ -154,7 +154,6 @@ class Docdata extends Admin_Controller {
                     }else{
                         $templateProcessor->setValue($post_key, $post_value);  
                     }
-
                     $i++;
                 } 
                 $path_dir = 'uploadfile/output/'.$business[0]['name'].'('.$_arr['keyword'].')';
@@ -259,62 +258,42 @@ class Docdata extends Admin_Controller {
 
         $data_info['fields'] = $fields;
         $j = count($data_info['fields']);
-        // foreach ($data_info['fields'] as $key => $value) {
-        //     //$data_info['fields'][$key]["value"] = isset($values[$value["field_name"]])? $values[$value["field_name"]]:'';
-        //     $i = 2;
-        //     while (isset( $values[$value["field_name"].$i])) {
-        //         $data_info['fields'][$j]["value"] = $values[$value["field_name"].$i];
-        //         $i++;
-        //         $j++;
-        //     }
-        //     $data_info['fields'][$key]["value"] = $values[$value["field_name"]];
-        // }
+
         foreach ($data_info['fields'] as $key => $value) {
             $data_i['fields'][$value['field_name']] = $value;
-
-
         }
         unset($values[0]);
         foreach ($values as $key => $value) {
             $data_i['fields'][$key]['value'] = $value;
-
-            $i = 2;
-            while (isset( $values[$key.$i])) {
-                $data_i['fields'][$key.$i] = $data_i['fields'][$key];
-                $data_i['fields'][$key.$i]['value'] = $value;
-                $data_i['fields'][$key.$i]['category'] = $data_i['fields'][$key.$i]['category'].$i;
-                $i++;
-            }
         }
 
         $data_info['fields'] = $data_i['fields'];
-
-
         $categorys = $this->db->query("select categorys from t_aci_business where business_id={$business_id}")->result_array()[0]['categorys'];
         $categorys = explode("|", $categorys);
         $new_fields = array();
         foreach ($categorys as $key => $value) {
             $new_fields[$value] = array();
         }
-        //print_r($data_info);die();
+
         foreach($data_info['fields'] as $f)
         {
-
-            if(!in_array($f['category'], array_keys($new_fields)) && in_array(preg_replace('|[0-9a-zA-Z/]+|', '', $f['category']),$categorys))
-            {
-
-                $offset = array_search(preg_replace('|[0-9a-zA-Z/]+|', '', $f['category']), array_keys($new_fields)) + 
-                $this->countArray(array_keys($new_fields),preg_replace('|[0-9a-zA-Z/]+|', '', $f['category'])) ;
-                $new_fields = array_merge(array_slice($new_fields, 0, $offset), array($f['category']=>array()), array_slice($new_fields, $offset));
-                $i++;
-            }
-
             if(in_array($f['category'], array_keys($new_fields)) )
             {
-                array_push($new_fields[$f['category']],$f);
+                if(is_array($f['value']))
+                {
+                    $i = "#";
+                    foreach ($f['value'] as $key => $value) {
+                        $tmp = $f;
+                        $tmp['value'] = $value;
+                        if(!isset($new_fields[$i.$f['category']])) $new_fields[$i.$f['category']] = array();
+                        array_push($new_fields[$i.$f['category']],$tmp);
+                        $i = $i."#";
+                    }
+                }else{
+                    array_push($new_fields[$f['category']],$f);
+                }
             }
         }
-        //print_r($new_fields);die();
 
         $data_info['fields'] = $new_fields;
         $id = $data['docdata_id'];
@@ -400,23 +379,64 @@ class Docdata extends Admin_Controller {
     function readonly($id=0)
     {
         $id = intval($id);
+
+                $id = intval($id);
         
         $data =$this->docdata_model->get_one(array('docdata_id'=>$id));
         $values = json_decode($data['data'],true);
         $business_id = $data['business_id'];
+        $business = $this->db->query("select * from t_aci_business where business_id={$business_id}")->result_array(); 
         $data_info['fields'] = array();
-        $fields = $this->db->query("select field_name,field_alias from t_aci_fields where business_id={$business_id}")->result_array();
+        $fields = $this->db->query("select field_name,field_alias,category,type,field_values from t_aci_fields where business_id={$business_id}")->result_array();
+
         $data_info['fields'] = $fields;
+        $j = count($data_info['fields']);
 
         foreach ($data_info['fields'] as $key => $value) {
-            $data_info['fields'][$key]["value"] =  isset($values[$value["field_name"]])?$values[$value["field_name"]]:"";
+            $data_i['fields'][$value['field_name']] = $value;
         }
+        unset($values[0]);
+        foreach ($values as $key => $value) {
+            $data_i['fields'][$key]['value'] = $value;
+        }
+
+        $data_info['fields'] = $data_i['fields'];
+        $categorys = $this->db->query("select categorys from t_aci_business where business_id={$business_id}")->result_array()[0]['categorys'];
+        $categorys = explode("|", $categorys);
+        $new_fields = array();
+        foreach ($categorys as $key => $value) {
+            $new_fields[$value] = array();
+        }
+
+        foreach($data_info['fields'] as $f)
+        {
+            if(in_array($f['category'], array_keys($new_fields)) )
+            {
+                if(is_array($f['value']))
+                {
+                    $i = "#";
+                    foreach ($f['value'] as $key => $value) {
+                        $tmp = $f;
+                        $tmp['value'] = $value;
+                        if(!isset($new_fields[$i.$f['category']])) $new_fields[$i.$f['category']] = array();
+                        array_push($new_fields[$i.$f['category']],$tmp);
+                        $i = $i."#";
+                    }
+                }else{
+                    array_push($new_fields[$f['category']],$f);
+                }
+            }
+        }
+
+        $data_info['fields'] = $new_fields;
+        $id = $data['docdata_id'];
+        $data_info["fields"]["docs"] = $data['docs'];
 
         $id = $data['docdata_id'];
         $data_info["fields"]["docs"] = $data['docs'];
 
-        $documents = $this->db->query("select * from `t_aci_document` where document_id in ({$data['docs']})")->result_array();
-        $data_info["fields"]["docs"] = $documents;
+        //$documents = $this->db->query("select * from `t_aci_document` where document_id in ({$data['docs']})")->result_array();
+        //$data_info["fields"]["docs"] = $documents;
 
         if(!$data_info)$this->showmessage('信息不存在');
         $data_info = $this->_process_datacorce_value($data_info);

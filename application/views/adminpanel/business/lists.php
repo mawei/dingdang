@@ -17,10 +17,11 @@
 <label for="keyword" class="control-label form-control-static">关键词</label>
 <input class="form-control" type="text" name="keyword"  value="<?php echo isset($data_info['keyword'])? $data_info['keyword']:"";?>" id="keyword" placeholder="请输入关键词"/></div>
 
-<div class="form-group">
+<!-- <div class="form-group">
 <label for="keywords" class="form-control-static">价格:</label>
 <input class="form-control" size="3" type="number"  name="charge_1"  id="chargecharge1" placeholder="价格大于等于范围"/> - <input class="form-control" size="3" type="number"  name="charge_2"  id="chargecharge2" placeholder="价格小于等于范围"/></div>
-<button type="submit" name="dosubmit" value="搜索" class="btn btn-success"><i class='glyphicon glyphicon-search'></i></button>        </form>
+<button type="submit" name="dosubmit" value="搜索" class="btn btn-success"><i class='glyphicon glyphicon-search'></i></button>   -->      
+</form>
         </div>
       </div> 
     </div>
@@ -49,8 +50,9 @@
               <?php $css="sorting_desc";$next_url = base_url('adminpanel/business?order=categorys&dir=asc'); ?>
               <?php } elseif (($order=='categorys'&&$dir=='asc')) { ?>
               <?php $css="sorting_asc";?>
-              <?php } ?><th class="sorting <?php echo $css;?>"   onclick="window.location.href='<?php echo $next_url;?>'"   nowrap="nowrap">信息分类</th>
-              <th>操作</th>
+              <?php } ?>
+<!--               <th class="sorting <?php echo $css;?>"   onclick="window.location.href='<?php echo $next_url;?>'"   nowrap="nowrap">信息分类</th>
+ -->              <th>操作</th>
             </tr>
           </thead>
           <tbody>
@@ -59,12 +61,12 @@
               <td><input type="checkbox" name="pid[]" value="<?php echo $v['business_id']?>" /></td>
                              <td><?php echo $v['name']?></td>
 <!--                             <td><?php echo $v['charge']?></td>
- -->                            <td><?php echo $v['categorys']?></td>
+                             <td><?php echo $v['categorys']?></td>-->
               <td>
                             	<a href="<?php echo base_url('adminpanel/business/readonly/'.$v['business_id'])?>"  class="btn btn-default btn-xs"><span class="glyphicon glyphicon-share-alt"></span> 查看</a>
-                                            <a href="<?php echo base_url('adminpanel/docdata/add/'.$v['business_id'])?>"  class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span> 创建文档</a>
-                                            <a href="<?php echo base_url('adminpanel/business/edit/'.$v['business_id'])?>"  class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span> 修改</a>
-                                            <button type="button" class="btn btn-default btn-xs delete-btn" value="<?php echo $v['business_id'];?>"><span class="glyphicon glyphicon-remove"></span> 删除</button>
+                                            <a href="<?php echo base_url('adminpanel/docdata/add/'.$v['business_id'])?>"  class="btn btn-success btn-xs "><span class="glyphicon glyphicon-edit"></span> 创建文档</a>
+                                            <a href="<?php echo base_url('adminpanel/business/edit/'.$v['business_id'])?>"  class="btn btn-info btn-xs"><span class="glyphicon glyphicon-edit"></span> 修改</a>
+                                            <button type="button" class="btn btn-danger btn-xs delete-btn" value="<?php echo $v['business_id'];?>"><span class="glyphicon glyphicon-remove"></span> 删除</button>
                 
               </td>
             </tr>

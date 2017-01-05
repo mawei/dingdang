@@ -34,8 +34,8 @@
         </div>
         <div class="form-signin-footer"> <a><i class="glyphicon glyphicon-question-sign"></i> 忘记密码？</a>
 
- <a href="<?php echo SITE_URL.'adminpanel/manage/register';?>"><i class="glyphicon glyphicon-question-sign"></i> 点击注册</a>
-</div>
+<!--  <a href="<?php echo SITE_URL.'adminpanel/manage/register';?>"><i class="glyphicon glyphicon-question-sign"></i> 点击注册</a>
+ --></div>
     </form>
 
     <script language="javascript" type="text/javascript">
